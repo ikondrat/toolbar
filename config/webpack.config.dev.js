@@ -21,17 +21,9 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
-// This is the development configuration.
-// It is focused on developer experience and fast rebuilds.
-// The production configuration is different and lives in a separate file.
-module.exports = {
-  // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
-  // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
-  devtool: 'cheap-module-source-map',
-  // These are the "entry points" to our application.
-  // This means they will be the "root" imports that are included in JS bundle.
-  // The first two entry points enable "hot" CSS and auto-refreshes for JS.
-  entry: [
+let appSources = {};
+paths.apps.forEach(function(app) {
+  appSources[app.name] = [
     // We ship a few polyfills by default:
     require.resolve('./polyfills'),
     // Include an alternative client for WebpackDevServer. A client's job is to
@@ -46,11 +38,24 @@ module.exports = {
     // require.resolve('webpack/hot/dev-server'),
     require.resolve('react-dev-utils/webpackHotDevClient'),
     // Finally, this is your app's code:
-    paths.appIndexJs,
+    app.file,
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
-  ],
+  ];
+}, this);
+
+// This is the development configuration.
+// It is focused on developer experience and fast rebuilds.
+// The production configuration is different and lives in a separate file.
+module.exports = {
+  // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
+  // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
+  devtool: 'cheap-module-source-map',
+  // These are the "entry points" to our application.
+  // This means they will be the "root" imports that are included in JS bundle.
+  // The first two entry points enable "hot" CSS and auto-refreshes for JS.
+  entry: appSources,
   output: {
     // Next line is not used in dev but WebpackDevServer crashes without it:
     path: paths.appBuild,
@@ -59,7 +64,7 @@ module.exports = {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: 'static/js/[name].js',
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
     // This is the URL that app is served from. We use "/" in development.
