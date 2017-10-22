@@ -65,11 +65,11 @@ export default class Opener extends Component {
     return (
       <Layout>
         <AutoComplete
-          hintText="Select company"
+          hintText="Select url"
           dataSource={this.state.companies}
           onUpdateInput={this.handleUpdateInput}
           onNewRequest={this.handleSelection}
-          floatingLabelText="Select company by name"
+          floatingLabelText="Select url description"
           fullWidth={true}
           style={this.state.hasValue ? styleSearch : style}
         />
