@@ -19,12 +19,7 @@ export default class OptionsPage extends Component {
   state = {
     newCompanyName: null,
     newCompanyUrl: null,
-    companies: [
-      {
-        text: 'fti staging',
-        value: 'https://www.google.com'
-      }
-    ]
+    companies: []
   };
 
   componentDidMount() {
@@ -63,7 +58,7 @@ export default class OptionsPage extends Component {
     if (cName && cValue) {
       companies.push({
         text: cName,
-        value: cName
+        value: cValue
       } as Company);
   
       this.setState({
