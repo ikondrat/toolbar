@@ -14,9 +14,6 @@ const style = {height: 50},
       styleSearch = {
         height: 500
       };
-/**
- * The input is used to create the `dataSource`, so the input always matches three entries.
- */
 export default class Opener extends Component {
   state = {
     hasValue: false,
@@ -46,7 +43,6 @@ export default class Opener extends Component {
   }
 
   handleUpdateInput = (value: string) => {
-    
     this.setState({
       hasValue: value.length > 0,
       dataSource: this.state.companies,

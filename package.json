@@ -1,7 +1,7 @@
 {
-  "name": "tic-tac-toe-ts",
-  "version": "0.1.0",
-  "private": true,
+  "name": "url-quick-opener",
+  "version": "1.0.0",
+  "private": false,
   "dependencies": {
     "@types/chrome": "0.0.50",
     "@types/material-ui": "^0.18.3",
