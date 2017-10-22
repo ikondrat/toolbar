@@ -44,10 +44,16 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
+  appHtmlOptions: resolveApp('public/options.html'),
+  appIndexJs: resolveApp('src/index.tsx'),
   apps: [
     {
       name: 'index',
-      file: resolveApp('./src/index.tsx')
+      jsFile: resolveApp('./src/index.tsx')
+    },
+    {
+      name: 'options',
+      jsFile: resolveApp('./src/options.tsx')
     }
   ],
   appPackageJson: resolveApp('package.json'),

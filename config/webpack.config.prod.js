@@ -45,6 +45,11 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
+const entry = {};
+paths.apps.forEach(app => {
+  entry[app.name] = [require.resolve('./polyfills'), app.jsFile] 
+});
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -55,7 +60,7 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: entry,
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -73,14 +78,6 @@ module.exports = {
         .replace(/\\/g, '/'),
   },
   resolve: {
-    // This allows you to set a fallback for where Webpack should look for modules.
-    // We placed these paths second because we want `node_modules` to "win"
-    // if there are any conflicts. This matches Node resolution mechanism.
-    // https://github.com/facebookincubator/create-react-app/issues/253
-    modules: ['node_modules', paths.appNodeModules].concat(
-      // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
-    ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
@@ -241,6 +238,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+      chunks: ['index'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -253,6 +251,11 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true,
       },
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'options.html',
+      chunks: ['options'],
+      template: paths.appHtmlOptions
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
