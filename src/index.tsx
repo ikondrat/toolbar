@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Opener from './components/WlOpener';
-
+import Opener from './components/Opener';
 const App = () => (
   <MuiThemeProvider>
     <Opener/>

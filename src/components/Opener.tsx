@@ -3,13 +3,7 @@ import { Component } from 'react';
 import { 
   AutoComplete
 } from 'material-ui';
-
-import styled from 'styled-components';
-
-const Opener = styled.div`
-  min-width: 300px;
-  min-height: 300px;
-`;
+import Layout from './Layout';
 
 interface Company {
   text: string;
@@ -19,9 +13,8 @@ interface Company {
 /**
  * The input is used to create the `dataSource`, so the input always matches three entries.
  */
-export default class AutoCompleteExampleSimple extends Component {
+export default class Opener extends Component {
   state = {
-    dataSource: [],
     companies: [
       {
         text: 'fti staging',
@@ -30,9 +23,26 @@ export default class AutoCompleteExampleSimple extends Component {
     ]
   };
 
+  restoreCompanies = () => {
+    if (chrome && chrome.storage) {
+      chrome.storage.sync.get(
+      {
+        companies: []
+      }, 
+      items => {
+        this.setState({
+          companies: items.companies
+        });
+      }
+    );
+    }
+  }
+  
+  componentDidMount() {
+    this.restoreCompanies();
+  }
+
   handleUpdateInput = (value: string) => {
-    // chrome.storage.local
-    // console.log('log: ', chrome.storage.local.get('hello'));
     this.setState({
       dataSource: this.state.companies,
       dataSourceConfig: { 
@@ -52,16 +62,16 @@ export default class AutoCompleteExampleSimple extends Component {
 
   render() {
     return (
-      <Opener>
+      <Layout>
         <AutoComplete
           hintText="Select company"
-          dataSource={this.state.dataSource}
+          dataSource={this.state.companies}
           onUpdateInput={this.handleUpdateInput}
           onNewRequest={this.handleSelection}
-          floatingLabelText="Full width"
+          floatingLabelText="Select company by name"
           fullWidth={true}
         />
-      </Opener>
+      </Layout>
     );
   }
 }
